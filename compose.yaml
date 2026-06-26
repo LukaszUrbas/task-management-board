@@ -20,7 +20,7 @@ services:
 
   app:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: task-management-board-app
     restart: unless-stopped
@@ -36,6 +36,17 @@ services:
       DOCKER_COMPOSE_ENABLED: "false"
     ports:
       - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: task-management-board-frontend
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
 
 volumes:
   postgres_data:
