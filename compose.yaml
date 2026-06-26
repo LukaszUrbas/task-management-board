@@ -1,0 +1,41 @@
+services:
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: task-management-board-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: task_management_board
+      POSTGRES_USER: task_management_board
+      POSTGRES_PASSWORD: task_management_board
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U task_management_board -d task_management_board" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-management-board-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: task_management_board
+      DB_USER: task_management_board
+      DB_PASSWORD: task_management_board
+      DOCKER_COMPOSE_ENABLED: "false"
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
