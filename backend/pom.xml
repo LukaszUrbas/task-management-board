@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.app</groupId>
-    <artifactId>task-management-board</artifactId>
+    <artifactId>task-management-board-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>task-management-board</name>
-    <description>task-management-board</description>
+    <name>task-management-board-backend</name>
+    <description>task-management-board-backend</description>
     <url/>
     <licenses>
         <license/>
@@ -28,7 +28,25 @@
     </scm>
     <properties>
         <java.version>20</java.version>
+        <testcontainers.version>1.21.1</testcontainers.version>
+        <!-- Flyway Maven plugin – nadpisywalne przez -Dflyway.url=... itd. -->
+        <flyway.url>jdbc:postgresql://localhost:5432/task_management_board</flyway.url>
+        <flyway.user>task_management_board</flyway.user>
+        <flyway.password>task_management_board</flyway.password>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -80,6 +98,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testcontainers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

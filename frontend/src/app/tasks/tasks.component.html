@@ -1,25 +1,25 @@
 <div class="board">
   <h1>📋 Task Management Board</h1>
 
-  <div *ngIf="loading" class="state loading">
+  <div *ngIf="loading()" class="state loading">
     ⏳ Łączenie z backendem...
   </div>
 
-  <div *ngIf="error" class="state error">
-    ❌ {{ error }}
+  <div *ngIf="error()" class="state error">
+    ❌ {{ error() }}
   </div>
 
-  <div *ngIf="!loading && !error">
+  <div *ngIf="!loading() && !error()">
     <div class="connection-ok">
       ✅ Połączenie z backendem działa poprawnie!
-      <span class="count">({{ tasks.length }} zadań w bazie)</span>
+      <span class="count">({{ tasks().length }} zadań w bazie)</span>
     </div>
 
-    <div *ngIf="tasks.length === 0" class="empty">
+    <div *ngIf="tasks().length === 0" class="empty">
       Brak zadań. Dodaj pierwsze przez <code>POST /api/tasks</code>.
     </div>
 
-    <table *ngIf="tasks.length > 0">
+    <table *ngIf="tasks().length > 0">
       <thead>
         <tr>
           <th>ID</th>
@@ -30,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of tasks">
+        <tr *ngFor="let task of tasks()">
           <td>{{ task.id }}</td>
           <td>{{ task.title }}</td>
           <td>

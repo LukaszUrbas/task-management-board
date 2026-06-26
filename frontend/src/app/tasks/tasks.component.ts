@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from './task.service';
 import { Task } from './task.model';
@@ -11,21 +11,21 @@ import { Task } from './task.model';
   styleUrl: './tasks.component.scss'
 })
 export class TasksComponent implements OnInit {
-  tasks: Task[] = [];
-  loading = true;
-  error: string | null = null;
+  tasks = signal<Task[]>([]);
+  loading = signal(true);
+  error = signal<string | null>(null);
 
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe({
       next: (data) => {
-        this.tasks = data;
-        this.loading = false;
+        this.tasks.set(data);
+        this.loading.set(false);
       },
       error: (err) => {
-        this.error = 'Nie udało się połączyć z backendem: ' + err.message;
-        this.loading = false;
+        this.error.set('Nie udało się połączyć z backendem: ' + err.message);
+        this.loading.set(false);
       }
     });
   }
