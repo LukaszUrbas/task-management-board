@@ -40,9 +40,10 @@ public class TaskService {
     @Transactional
     public TaskResponse create(TaskRequest request) {
         Task task = Task.builder()
-                .title(request.title())
+                .name(request.name())
                 .description(request.description())
                 .status(request.status())
+                .deadline(request.deadline())
                 .build();
         return toResponse(taskRepository.save(task));
     }
@@ -51,9 +52,10 @@ public class TaskService {
     public TaskResponse update(Long id, TaskRequest request) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
-        task.setTitle(request.title());
+        task.setName(request.name());
         task.setDescription(request.description());
         task.setStatus(request.status());
+        task.setDeadline(request.deadline());
         return toResponse(taskRepository.save(task));
     }
 
@@ -70,9 +72,11 @@ public class TaskService {
     private TaskResponse toResponse(Task task) {
         return TaskResponse.builder()
                 .id(task.getId())
-                .title(task.getTitle())
+                .name(task.getName())
                 .description(task.getDescription())
                 .status(task.getStatus())
+                .deadline(task.getDeadline())
+                .subprojectId(task.getSubproject() != null ? task.getSubproject().getId() : null)
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
                 .build();

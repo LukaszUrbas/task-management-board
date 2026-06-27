@@ -1,20 +1,20 @@
 package com.app.taskmanagementboard.dto;
 
 import com.app.taskmanagementboard.entity.TaskStatus;
-import lombok.Builder;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
-@Builder
-public record TaskResponse(
+public record SubprojectResponse(
         Long id,
         String name,
         String description,
         TaskStatus status,
         LocalDate deadline,
-        Long subprojectId,
+        Long projectId,
+        List<TaskResponse> taskResponseList,
         Instant createdAt,
         Instant updatedAt
-) {}
-
+) {
+}

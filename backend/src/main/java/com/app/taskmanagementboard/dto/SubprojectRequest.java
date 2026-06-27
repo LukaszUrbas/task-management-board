@@ -6,8 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public record TaskRequest(
+public record SubprojectRequest(
         @NotBlank @Size(max = 255)
         String name,
         String description,
@@ -15,6 +16,6 @@ public record TaskRequest(
         TaskStatus status,
         LocalDate deadline,
         @NotNull
-        Long subprojectId
-) {}
-
+        Long projectId
+) {
+}

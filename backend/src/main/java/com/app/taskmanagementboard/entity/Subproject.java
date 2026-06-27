@@ -5,14 +5,16 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "subproject")
 @Getter
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-public class Task extends BaseEntity {
+public class Subproject extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
@@ -21,7 +23,9 @@ public class Task extends BaseEntity {
     private LocalDate deadline;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subproject_id")
-    private Subproject subproject;
-}
+    @JoinColumn(name = "project_id")
+    private Project project;
 
+    @OneToMany(mappedBy = "subproject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
+}
